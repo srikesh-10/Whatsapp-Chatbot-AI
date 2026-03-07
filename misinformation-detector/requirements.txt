@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+lxml
+duckduckgo-search
+sentence-transformers
+scikit-learn
+fastapi
+uvicorn
+openai-whisper
+python-multipart

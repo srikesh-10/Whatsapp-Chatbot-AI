@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Misinformation Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-shape bg-shape-1" aria-hidden="true"></div>
+  <div class="bg-shape bg-shape-2" aria-hidden="true"></div>
+
+  <main class="page-wrap">
+    <header class="hero">
+      <p class="eyebrow">Hackathon Demo Dashboard</p>
+      <h1>Voice Misinformation Detector</h1>
+      <p class="subtitle">Voice Message -> Whisper -> Claim Verifier -> Evidence -> Verdict</p>
+    </header>
+
+    <section class="input-panel card">
+      <h2>Check a Claim</h2>
+      <form id="verifyForm" class="verify-form">
+        <label for="claimInput">Claim Text</label>
+        <textarea id="claimInput" name="claim" rows="3" placeholder="Example: Drinking turmeric cures diabetes" required></textarea>
+        <div class="action-row">
+          <button type="submit" id="verifyButton" class="btn btn-primary">Verify Claim</button>
+          <button type="button" id="demoButton" class="btn btn-secondary">Load Demo Result</button>
+        </div>
+      </form>
+      <p id="statusText" class="status-text" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="grid-results">
+      <article class="card claim-panel">
+        <h3>Claim</h3>
+        <p id="claimText" class="claim-text">No claim verified yet.</p>
+      </article>
+
+      <article class="card verdict-panel">
+        <h3>Verdict</h3>
+        <p id="verdictBadge" class="verdict-badge verdict-unknown">Awaiting result</p>
+      </article>
+
+      <article class="card confidence-panel">
+        <h3>Confidence</h3>
+        <p id="confidenceText" class="confidence-text">0%</p>
+      </article>
+    </section>
+
+    <section class="grid-long">
+      <article class="card sources-panel">
+        <h3>Sources Checked</h3>
+        <ul id="sourcesList" class="sources-list">
+          <li>No sources yet.</li>
+        </ul>
+      </article>
+
+      <article class="card analytics-panel">
+        <h3>Session Analytics</h3>
+        <canvas id="verdictChart" height="190" aria-label="Verdict analytics chart"></canvas>
+      </article>
+    </section>
+
+    <section class="grid-long single">
+      <article class="card explanation-panel">
+        <h3>AI Explanation</h3>
+        <p id="explanationText">Explanation will appear after verification.</p>
+      </article>
+    </section>
+
+    <section class="grid-long single">
+      <article class="card counter-panel">
+        <div class="counter-head">
+          <h3>Counter Message</h3>
+          <button type="button" id="copyButton" class="btn btn-secondary" disabled>Copy Message</button>
+        </div>
+        <pre id="counterMessage" class="counter-message">Counter message will appear here.</pre>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

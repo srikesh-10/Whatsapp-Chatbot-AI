@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Misinformation Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <p class="tag">Hackathon Demo</p>
+      <h1>Voice Misinformation Detector</h1>
+      <p class="sub">Whisper -> Evidence Search -> Semantic Verification -> Verdict</p>
+    </header>
+
+    <section class="card input-section">
+      <h2>Verify a Claim</h2>
+      <form id="verifyForm">
+        <label for="claimInput">Claim text</label>
+        <textarea id="claimInput" rows="3" placeholder="Drinking turmeric cures diabetes" required></textarea>
+        <div class="actions">
+          <button type="submit" id="verifyBtn">Run Verification</button>
+          <button type="button" id="demoBtn" class="secondary">Load Demo</button>
+        </div>
+      </form>
+      <p id="statusText" class="status"></p>
+    </section>
+
+    <section class="grid-top">
+      <article class="card">
+        <h3>Claim</h3>
+        <p id="claimText">No result yet.</p>
+      </article>
+      <article class="card">
+        <h3>Verdict</h3>
+        <p id="verdictText" class="verdict unknown">Unknown</p>
+      </article>
+      <article class="card">
+        <h3>Confidence</h3>
+        <p id="confidenceText" class="confidence">0%</p>
+      </article>
+    </section>
+
+    <section class="grid-mid">
+      <article class="card">
+        <h3>Sources Checked</h3>
+        <ul id="sourcesList">
+          <li>No sources yet.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Verdict Analytics</h3>
+        <canvas id="verdictChart" height="180"></canvas>
+      </article>
+    </section>
+
+    <section class="card">
+      <h3>AI Explanation</h3>
+      <p id="explanationText">Explanation will appear here.</p>
+    </section>
+
+    <section class="card">
+      <div class="counter-head">
+        <h3>Counter Message</h3>
+        <button id="copyBtn" class="secondary" disabled>Copy Message</button>
+      </div>
+      <pre id="counterText">Counter message will appear here.</pre>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="/assets/script.js"></script>
+</body>
+</html>

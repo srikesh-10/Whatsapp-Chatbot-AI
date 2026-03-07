@@ -1,10 +1,27 @@
 import ffmpeg
 import os
+from pathlib import Path
 
-# Add FFmpeg path to environment for Windows if installed via WinGet
-WINGET_FFMPEG_PATH = r"C:\Users\srike\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.0.1-full_build\bin"
-if os.path.exists(WINGET_FFMPEG_PATH):
-    os.environ["PATH"] += os.pathsep + WINGET_FFMPEG_PATH
+def _add_winget_ffmpeg_to_path() -> None:
+    """Add FFmpeg to PATH when installed with winget in the current user profile."""
+    local_app_data = os.getenv("LOCALAPPDATA")
+    if not local_app_data:
+        return
+
+    packages_root = Path(local_app_data) / "Microsoft" / "WinGet" / "Packages"
+    if not packages_root.exists():
+        return
+
+    candidate_dirs = list(packages_root.glob("Gyan.FFmpeg*"))
+    for candidate in candidate_dirs:
+        bin_dir = candidate / "ffmpeg-8.0.1-full_build" / "bin"
+        if (bin_dir / "ffmpeg.exe").exists():
+            if str(bin_dir) not in os.environ.get("PATH", ""):
+                os.environ["PATH"] = os.environ.get("PATH", "") + os.pathsep + str(bin_dir)
+            return
+
+
+_add_winget_ffmpeg_to_path()
 
 def convert_to_wav(input_path: str, output_path: str) -> str:
     """
