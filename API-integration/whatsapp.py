@@ -4,6 +4,7 @@ from deep_translator import GoogleTranslator
 import os
 import sys
 from pathlib import Path
+import importlib.util
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -17,9 +18,23 @@ if str(audio_module) not in sys.path:
 if str(pipeline_module) not in sys.path:
     sys.path.append(str(pipeline_module))
 
-from audio_converter import convert_to_wav
-from transcriber import transcribe_audio
-from pipeline import run_pipeline
+
+def _load_module(module_name: str, module_path: Path):
+    spec = importlib.util.spec_from_file_location(module_name, str(module_path))
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load module: {module_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+audio_converter_mod = _load_module("audio_converter", audio_module / "audio_converter.py")
+transcriber_mod = _load_module("transcriber", audio_module / "transcriber.py")
+pipeline_mod = _load_module("pipeline", pipeline_module / "pipeline.py")
+
+convert_to_wav = audio_converter_mod.convert_to_wav
+transcribe_audio = transcriber_mod.transcribe_audio
+run_pipeline = pipeline_mod.run_pipeline
 
 
 def _get_env(name: str) -> str:
