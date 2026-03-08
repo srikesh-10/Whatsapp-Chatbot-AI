@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 import tempfile
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -68,12 +68,18 @@ def health() -> dict:
 
 
 @app.get("/webhook")
-def verify_webhook(hub_mode: str = "", hub_verify_token: str = "", hub_challenge: str = ""):
+def verify_webhook(request: Request, hub_mode: str = "", hub_verify_token: str = "", hub_challenge: str = ""):
     if not WHATSAPP_VERIFY_TOKEN:
         raise HTTPException(status_code=500, detail="Server config missing WHATSAPP_VERIFY_TOKEN")
 
-    if hub_mode == "subscribe" and hub_verify_token == WHATSAPP_VERIFY_TOKEN:
-        return int(hub_challenge) if hub_challenge.isdigit() else hub_challenge
+    # Meta sends dotted query keys. Keep underscore fallbacks for manual testing.
+    query = request.query_params
+    mode = query.get("hub.mode", hub_mode)
+    verify_token = query.get("hub.verify_token", hub_verify_token)
+    challenge = query.get("hub.challenge", hub_challenge)
+
+    if mode == "subscribe" and verify_token == WHATSAPP_VERIFY_TOKEN:
+        return int(challenge) if challenge.isdigit() else challenge
     raise HTTPException(status_code=403, detail="Verification failed")
 
 
